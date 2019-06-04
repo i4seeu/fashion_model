@@ -19,6 +19,8 @@ trainloader = torch.utils.data.DataLoader(trainset, batch_size=64, shuffle=True)
 testset = datasets.FashionMNIST('~/.pytorch/F_MNIST_data/', download=True, train=False, transform=transform)
 testloader = torch.utils.data.DataLoader(testset, batch_size=64, shuffle=True)
 
+image, label = next(iter(trainloader))
+helper.imshow(image[0,:]);
 
 from torch import nn, optim
 import torch.nn.functional as F
@@ -63,3 +65,13 @@ for e in range(epochs):
         running_loss += loss.item()
     else:
         print(running_loss)
+#visualization and testing
+dataiter = iter(testloader)
+images, labels = dataiter.next()
+img = images[1]
+
+# TODO: Calculate the class probabilities (softmax) for img
+ps = torch.exp(model(img))
+
+# Plot the image and probabilities
+helper.view_classify(img, ps, version='Fashion')
